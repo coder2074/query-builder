@@ -1,0 +1,89 @@
+<!--
+    Copyright (c) Microsoft Corporation
+    All rights reserved. 
+    Licensed under the Apache License, Version 2.0 (the ""License""); you may not use this file except in compliance with 
+    the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+    INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, 
+    MERCHANTABLITY OR NON-INFRINGEMENT. 
+
+    See the Apache Version 2.0 License for specific language governing permissions and limitations under the License.
+    -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>OData Query Builder</title>
+    <style type="text/css">
+        body
+        {
+            font-family: "Segoe UI", Helvetica, Verdana;
+            padding: 20px;
+        }
+    </style>
+
+<!-- for grid -->
+    <link rel="stylesheet" type="text/css" href="Scripts/oData-all.css" />
+<!-- End for the grid -->
+
+    <link type="text/css" href="Content/odata-query-builder.css" rel="stylesheet" />
+    <!-- Third party scripts or code, linked to or referenced from this 1eb site, 
+            are licensed to you by the third parties that own such code, not by Microsoft. -->
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.0.min.js"></script>
+    <script type="text/javascript" src="Scripts/odatajs-4.0.0.js"></script>
+    <script type="text/javascript" src="Scripts/odata-query-builder.js"></script>
+    
+    <script type="text/javascript">
+        // Document ready event handler.
+        $(document).ready(function () {
+            var createdQueryBuilder = new OData.explorer.DataExplorer(
+                {
+                    // An array containing the different endpoints.
+                    endpoints: [                    
+                        {
+                            name: 'Public',
+                            url: 'http://services.odata.org/V4/Northwind/Northwind.svc/$metadata',
+                        },
+                        {
+                            name: 'Macci-NAPAGILD23',
+                            url: 'http://rmacci.corelims.com:8080/pfs/NAPAGILD23/odata/$metadata',
+                        },
+                        {
+                            name: 'Macci-NAPAGILD52',
+                            url: 'http://rmacci.corelims.com:8080/pfs/NAPAGILD52/odata/$metadata',
+                            user: 'lims',
+                            password: '$hared201609cfg$0'
+                        },
+                        {
+                            name: 'QA-Intermediate',
+                            url: 'https://qa-1.coredev.cloud/QA1A36/odata/$metadata',
+                            user: 'lims',
+                            password: 'lims#1'
+                        }
+                        
+                    ]
+                });
+        });
+    </script>
+</head>
+<body>
+ <div class="container">
+      <div class='grid row'>
+        <div class='col-sm-12 col-md-6'>
+           <h1>OData Query Builder</h1>
+           <div id="queryBuilderContainer"></div>
+        </div>
+      </div>
+      <br>
+      <div class='grid row'>
+        <div class='col-sm-12 col-md-6'>
+          <div id="oData-grid"></div>
+        </div>
+      </div>
+ </div>
+    <script src="Scripts/ext-all.js"></script>
+    <script src="Scripts/form-grid.js"></script>
+</body>
+</html>

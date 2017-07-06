@@ -1,0 +1,1044 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="PlatformForScience" Alias="pfs">
+            <EntityType Name="SuperType">
+                <Key>
+                    <PropertyRef Name="SuperTypeName"/>
+                </Key>
+                <Property Name="SuperTypeName" Type="Edm.String" Nullable="false" MaxLength="64"/>
+                <NavigationProperty Name="EntityTypes" Type="Collection(pfs.EntityType)" Partner="SuperType"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="EntityType">
+                <Key>
+                    <PropertyRef Name="EntityTypeName"/>
+                </Key>
+                <Property Name="EntityTypeName" Type="Edm.String" Nullable="false" MaxLength="64"/>
+                <Property Name="SuperTypeName" Type="Edm.String" Nullable="false" MaxLength="64"/>
+                <NavigationProperty Name="SuperType" Type="pfs.SuperType" Partner="EntityTypes"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="YEAST" BaseType="pfs.ENTITY">
+                <Property Name="CI_ATTENUATION_PERCENTAGE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_FLOCCULATION" Type="Edm.String"/>
+                <Property Name="CI_UNIQUE_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_RUNS" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="BEER_YEAST" Type="pfs.BEER"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="USER_EQUATION" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultUserEquationImpl"/>
+                <Property Name="CI_USE_SIGFIGS" Type="Edm.Boolean" DefaultValue="0"/>
+                <Property Name="EQUATION" Type="Edm.String" DefaultValue="-1"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String" DefaultValue="###.####"/>
+            </EntityType>
+            <EntityType Name="URI" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultURIImpl"/>
+                <Property Name="CI_URI_ISEXTERNAL" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_URI_BASEDIRECTORY" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="UNPUBLISH_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="TYPE_SELECTOR" BaseType="pfs.ENTITY">
+                <Property Name="CI_SUPERTYPENAME" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.StringEntityTypeControlledVocab"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_EXPERIMENT_CONTROL_ROLLUP" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.trigger.impl.ExperimentSampleControlRollup"/>
+                <Property Name="CI_CONTROLROLLUP_CONTROLNAMES" Type="Edm.String"/>
+                <Property Name="CI_ATTRIBUTE_NAME" Type="Edm.String"/>
+                <Property Name="CI_AGGREGATE_FUNCTION" Type="Edm.String"/>
+                <Property Name="CI_ATTRIBUTE_NAME_TO_UPDATE" Type="Edm.String"/>
+                <Property Name="CI_UPDATE_ATTRIBUTE_SUPERTYPE" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_EXPT_CONT_UPDATE" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="CI_INHERITVALUESFROMLOT" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_INHERITVALUESFROMSAMPLE" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_INHERITVALUESFROMCONTAINER" Type="Edm.Boolean" DefaultValue="1"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_EXPT_CREATE_SAMPLE_LOT" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="CI_CREATE_LOT" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_SAMPLE_TYPE_TO_CREATE" Type="Edm.String" DefaultValue="1"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_EXPT_DATA_UPDATE" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String" DefaultValue="ON_EXPT_DATA_UPDATE"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.trigger.impl.ExptDataUpdateExptDataFromSampleLotTriggerImpl"/>
+                <Property Name="CI_INHERITVALUESFROMLOT" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_INHERITVALUESFROMSAMPLE" Type="Edm.Boolean" DefaultValue="1"/>
+                <Property Name="CI_UPDATETRIGGER_ATTRIBUTEMAPPING" Type="Edm.String" DefaultValue="sampleAttributeName=assayAttributeName,lotAttributeName=assayAttributeName"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_ASSAY_GROUPING_NUMERIC_ROLLUP" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="CI_ATTRIBUTE_NAME" Type="Edm.String"/>
+                <Property Name="CI_AGGREGATE_FUNCTION" Type="Edm.String"/>
+                <Property Name="CI_AGGREGATEATTRIBUTENAMELIST" Type="Edm.String"/>
+                <Property Name="CI_INTERMEDIATENAMETOREPORTEDNAME" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TRIGGER_MESSAGE_IMPL" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="CI_EMAIL_ADDRESS_ATTRIBUTENAME" Type="Edm.String"/>
+                <Property Name="CI_EMPLOYEE_ASSOCIATION_PREDICATE_ATTRIBUTENAME" Type="Edm.String"/>
+                <Property Name="CI_VELOCITY_TEMPLATE" Type="Edm.String"/>
+                <NavigationProperty Name="TRIGGER_MESSAGE" Type="pfs.TRIGGER_MESSAGE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="TRIGGER_MESSAGE" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.trigger.message.GenericTriggerMessageImpl"/>
+                <NavigationProperty Name="TRIGGER" Type="pfs.TRIGGER_MESSAGE_IMPL"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="TRIGGER_IMPL" BaseType="pfs.ENTITY">
+                <Property Name="CI_TRIGGER_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TRIGGER" BaseType="pfs.ENTITY">
+                <Property Name="CONDITION" Type="Edm.String"/>
+                <Property Name="VALUE" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_ACTION_TYPE" Type="Edm.String"/>
+                <Property Name="CI_TRIGGER_NAME" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TIRE" BaseType="pfs.ENTITY">
+                <Property Name="CI_TIRE_BRAND" Type="Edm.String"/>
+                <NavigationProperty Name="CAR" Type="pfs.CAR"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="TIMESTAMP" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultTimestampImpl"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String" DefaultValue="MM/dd/yy hh:mm a"/>
+                <Property Name="INPUT_FORMAT_STRING" Type="Edm.String" DefaultValue="MM/dd/yy hh:mm a"/>
+                <Property Name="READ_ONLY" Type="Edm.Boolean" DefaultValue="Yes"/>
+                <Property Name="ALLOW_WEEKENDS" Type="Edm.Boolean" DefaultValue="Yes"/>
+            </EntityType>
+            <EntityType Name="TEXT" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultTextImpl"/>
+                <Property Name="TEXT_AREA_HEIGHT" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="TEXT_AREA_WIDTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="TEXT_AREA_WRAP" Type="Edm.String" DefaultValue="off"/>
+                <Property Name="CI_JSPOPUP_FIELDS" Type="Edm.String"/>
+                <Property Name="CI_JSPOPUP_COLUMNS" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="TEST" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="STRING" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultStringImpl"/>
+                <Property Name="CI_SUPERTYPENAME" Type="Edm.String"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String"/>
+                <Property Name="CI_CASE_SENSITIVE_SEARCH" Type="Edm.Boolean" DefaultValue="No"/>
+                <Property Name="WIDTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="VALIDATE" Type="Edm.Boolean"/>
+                <Property Name="CI_STRING_MAX_LENGTH" Type="Edm.Decimal" Scale="100"/>
+            </EntityType>
+            <EntityType Name="STATUS_UPDATE_EVENT" BaseType="pfs.ENTITY">
+                <Property Name="CI_STATUS_UPDATE_EVENT_TEXT" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="SITE" BaseType="pfs.LOCATION"></EntityType>
+            <EntityType Name="SDMS_AWS_S3_JOB" BaseType="pfs.ENTITY">
+                <Property Name="CI_JOB_CRONSTRING" Type="Edm.String" DefaultValue="* * * * *"/>
+                <Property Name="CI_JOB_IMPLEMENTATIONCLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.job.impl.aws"/>
+                <Property Name="CI_JOB_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_JOB_LASTRUNSUCCESSFUL" Type="Edm.Boolean" DefaultValue="1" Scale="100"/>
+                <Property Name="CI_JOB_LASTRUNTIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_JOB_PCT_COMPLETE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_JOB_STATUS_MESSAGE" Type="Edm.String"/>
+                <Property Name="CI_JOB_TASK_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_INSTANCE_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_LOG" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEPATH" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEEXTENSION" Type="Edm.String" DefaultValue="*"/>
+                <Property Name="CI_JOB_FILEENTITYTYPE" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEPARSER" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="SDMS_FILE_SYSTEM_JOB" BaseType="pfs.ENTITY">
+                <Property Name="CI_JOB_CRONSTRING" Type="Edm.String" DefaultValue="* * * * *"/>
+                <Property Name="CI_JOB_IMPLEMENTATIONCLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.job.impl.sdms.FileDaemonJob"/>
+                <Property Name="CI_JOB_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_JOB_LASTRUNSUCCESSFUL" Type="Edm.Boolean" DefaultValue="1" Scale="100"/>
+                <Property Name="CI_JOB_LASTRUNTIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_JOB_PCT_COMPLETE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_JOB_STATUS_MESSAGE" Type="Edm.String"/>
+                <Property Name="CI_JOB_TASK_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_INSTANCE_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_LOG" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEPATH" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEEXTENSION" Type="Edm.String" DefaultValue="*"/>
+                <Property Name="CI_JOB_FILEENTITYTYPE" Type="Edm.String"/>
+                <Property Name="CI_JOB_FILEPARSER" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="SDK_USER" BaseType="pfs.ENTITY">
+                <Property Name="SDK_KEY" Type="Edm.String"/>
+                <Property Name="CI_USERNAME" Type="Edm.String"/>
+                <Property Name="CI_PASSWORD" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="SD_FILE" HasStream="true" BaseType="pfs.FILE"></EntityType>
+            <EntityType Name="SCHEDULED_REPORT" BaseType="pfs.ENTITY">
+                <Property Name="CI_REPORT_QUERY" Type="Edm.String"/>
+                <Property Name="CI_REPORT_DATASET" Type="Edm.String"/>
+                <Property Name="CI_REPORT_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_REPORT_LAST_RUN_SUCCESSFUL" Type="Edm.Boolean"/>
+                <Property Name="CI_REPORT_LAST_RUN_TIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_REPORT_TIME_TO_RUN_MIN" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_REPORT_IS_RUNNING" Type="Edm.Boolean"/>
+                <Property Name="CI_REPORT_EXPORT_FILE" Type="Edm.String"/>
+                <Property Name="CI_REPORT_NUM_COLUMNS" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_REPORT_NUM_ROWS" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="COREREPORT_REPORTJOB" Type="pfs.REPORT_JOB"></NavigationProperty>
+                <NavigationProperty Name="COREREPORT_COREAPPLICATION" Type="Collection(pfs.CORE_APPLICATION)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="SAMPLE_TRANSFER" BaseType="pfs.ENTITY">
+                <Property Name="TRANSFER_MAP" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="AD_HOC_QUERY" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="APPLICATION" BaseType="pfs.ENTITY">
+                <NavigationProperty Name="EMPLOYEE" Type="pfs.EMPLOYEE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="ACCESS_LEVEL" BaseType="pfs.ENTITY">
+                <Property Name="COMMENTS" Type="Edm.String"/>
+                <NavigationProperty Name="HAS_ACCESS" Type="pfs.EMPLOYEE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="ASSAY_DATA">
+                <Key>
+                    <PropertyRef Name="Barcode"/>
+                </Key>
+                <Property Name="Barcode" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="EXPERIMENT_SAMPLE" Type="pfs.EXPERIMENT_SAMPLE" Partner="ASSAY_DATA"></NavigationProperty>
+                <NavigationProperty Name="IMPL_CONTAINER" Type="pfs.CONTAINER"></NavigationProperty>
+                <NavigationProperty Name="ASSAY" Type="pfs.ASSAY"></NavigationProperty>
+                <NavigationProperty Name="PROTOCOL" Type="pfs.PROTOCOL"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="BANNER_MESSAGE" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="BEER" BaseType="pfs.ENTITY">
+                <Property Name="CI_TYPE" Type="Edm.String"/>
+                <Property Name="CI_BRAND" Type="Edm.String"/>
+                <Property Name="CI_TIER" Type="Edm.String"/>
+                <Property Name="CI_COLOR" Type="Edm.String"/>
+                <Property Name="CI_TARGET_ABV" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_TARGET_SED_G_L" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="BEER_FININGS" Type="pfs.FININGS"></NavigationProperty>
+                <NavigationProperty Name="BEER_HOPS" Type="pfs.HOPS"></NavigationProperty>
+                <NavigationProperty Name="BEER_MALT" Type="pfs.MALT"></NavigationProperty>
+                <NavigationProperty Name="BEER_YEAST" Type="pfs.YEAST"></NavigationProperty>
+                <NavigationProperty Name="BATCH" Type="pfs.BEER_BATCH"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="BEER_BATCH" BaseType="pfs.ENTITY">
+                <Property Name="CI_START_DATE" Type="Edm.Decimal"/>
+                <Property Name="CI_VOLUME_LITER" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="BEER" Type="pfs.BEER"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="BOOLEAN" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultBooleanImpl"/>
+                <Property Name="TRUE_DISPLAY_VALUE" Type="Edm.String" DefaultValue="Yes"/>
+                <Property Name="FALSE_DISPLAY_VALUE" Type="Edm.String" DefaultValue="No"/>
+                <Property Name="BOOLEAN_UI_WIDGET" Type="Edm.String" DefaultValue="Radio"/>
+                <Property Name="BOOLEAN_TRUES" Type="Edm.String" DefaultValue="yes,y,true,t,1"/>
+                <Property Name="BOOLEAN_FALSES" Type="Edm.String" DefaultValue="no,n,false,f,0"/>
+                <Property Name="CI_READONLY" Type="Edm.Boolean" DefaultValue="0"/>
+            </EntityType>
+            <EntityType Name="CALCULATOR" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="CAR" BaseType="pfs.ENTITY">
+                <Property Name="CI_CAR_MAKE" Type="Edm.String"/>
+                <Property Name="CI_CAR_PRICE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CAR_NUM_WHEELS" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CAR_NUM_GEARS" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CAR_COLOR" Type="Edm.String"/>
+                <NavigationProperty Name="CAR_ENGINE" Type="pfs.ENGINE"></NavigationProperty>
+                <NavigationProperty Name="CAR_TIRE" Type="Collection(pfs.TIRE)"></NavigationProperty>
+                <NavigationProperty Name="CAR_SPARE_TIRE" Type="pfs.TIRE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CELLENTITYTYPELINK" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultCellEntityTypeLinkImpl"/>
+                <Property Name="CI_CETL_ENTITYTYPE" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="ASSAY" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="CONCENTRATION" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultConcentrationImpl"/>
+                <Property Name="FORMAT" Type="Edm.String" DefaultValue="nM"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String" DefaultValue="###.####"/>
+                <Property Name="DISPLAY_UNITS" Type="Edm.Boolean" DefaultValue="0"/>
+                <Property Name="CI_NUMERICDATATYPE_ALLOW_SOFT_DATA" Type="Edm.Boolean" DefaultValue="No"/>
+            </EntityType>
+            <EntityType Name="CONDITIONAL_FORMAT" BaseType="pfs.ENTITY">
+                <Property Name="CONDITION" Type="Edm.String"/>
+                <Property Name="VALUE" Type="Edm.String"/>
+                <Property Name="DESCRIPTION" Type="Edm.String"/>
+                <Property Name="TEXT_MARKUP" Type="Edm.String"/>
+                <Property Name="HEX_COLOR" Type="Edm.String"/>
+                <Property Name="TEST" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="CONSUMABLE" BaseType="pfs.ENTITY">
+                <Property Name="QTY_PER_UNIT" Type="Edm.String"/>
+                <Property Name="CATALOG_NUMBER" Type="Edm.String"/>
+                <NavigationProperty Name="CHILD" Type="pfs.CONSUMABLE_LOT"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CONSUMABLE_LOT" BaseType="pfs.ENTITY">
+                <Property Name="DATE_ORDERED" Type="Edm.DateTimeOffset"/>
+                <Property Name="DATE_REQUESTED" Type="Edm.DateTimeOffset"/>
+                <Property Name="DATE_RECEIVED" Type="Edm.DateTimeOffset"/>
+                <NavigationProperty Name="PARENT" Type="pfs.CONSUMABLE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CONTAINER_FILL_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="COPY_EVENT" BaseType="pfs.ENTITY">
+                <Property Name="CHILDENTITYID" Type="Edm.String"/>
+                <Property Name="PARENTENTITYTYPE" Type="Edm.String"/>
+                <Property Name="PARENTENTITYID" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="CORE_APPLICATION" BaseType="pfs.ENTITY">
+                <Property Name="CI_APPLICATION_ICON_URL_TEMPLATE" Type="Edm.String"/>
+                <Property Name="CI_ENTITY_NAME_DISPLAY" Type="Edm.String"/>
+                <Property Name="CI_ICON_NAME_DISPLAY" Type="Edm.String"/>
+                <Property Name="CI_TILE_BACKGROUND_COLOR" Type="Edm.String" DefaultValue="#330000"/>
+                <Property Name="CI_TILE_BACKGROUND_IMAGE" Type="Edm.String"/>
+                <Property Name="CI_TILE_TEXT_PADDING_TOP" Type="Edm.String"/>
+                <Property Name="CI_TILE_TEXT_PADDING_LEFT" Type="Edm.String"/>
+                <Property Name="CI_TILE_TEXT_FONT_SIZE" Type="Edm.String"/>
+                <Property Name="CI_TILE_IMAGE_PADDING_TOP" Type="Edm.String"/>
+                <Property Name="CI_TILE_IMAGE_PADDING_LEFT" Type="Edm.String"/>
+                <Property Name="CI_TILE_IMAGE_SIZE_PCT" Type="Edm.String"/>
+                <Property Name="APPLICATION_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_NAV_ENTITYTYPEASSOC_JSON" Type="Edm.String"/>
+                <NavigationProperty Name="COREAPPLICATION_DASHBOARDAPPDETAIL" Type="pfs.CORE_DASHBOARD"></NavigationProperty>
+                <NavigationProperty Name="REPORT" Type="pfs.SCHEDULED_REPORT"></NavigationProperty>
+                <NavigationProperty Name="DASHBOARD" Type="pfs.DASHBOARD"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CORE_DASHBOARD" BaseType="pfs.ENTITY">
+                <Property Name="CI_ENTITY_NAME_DISPLAY" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTAINER_WIDTH" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTAINER_HEIGHT" Type="Edm.String"/>
+                <Property Name="CI_GDT_CONTAINER_DATA" Type="Edm.String"/>
+                <Property Name="CI_GDT_CONTAINER_DESCRIPTION" Type="Edm.String"/>
+                <NavigationProperty Name="COREDASHBOARD_COREGADGET" Type="Collection(pfs.CORE_GADGET)"></NavigationProperty>
+                <NavigationProperty Name="COREDASHBOARD_COREAPPLICATION" Type="Collection(pfs.CORE_APPLICATION)"></NavigationProperty>
+                <NavigationProperty Name="APPLICATION" Type="pfs.CORE_APPLICATION"></NavigationProperty>
+                <NavigationProperty Name="EMPLOYEE" Type="pfs.EMPLOYEE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CORE_DATA_TYPE" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.CoreDataTypeImpl"/>
+                <Property Name="CI_CORE_DATA_TYPE_JSON_CONFIG" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="CORE_GADGET" BaseType="pfs.ENTITY">
+                <Property Name="CI_GADGET_VERSION" Type="Edm.String"/>
+                <Property Name="CI_GADGET_WIDTH" Type="Edm.String"/>
+                <Property Name="CI_GADGET_HEIGHT" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTENTTYPE" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTENT" Type="Edm.String"/>
+                <Property Name="CI_GDT_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_GADGET_TAGS" Type="Edm.String"/>
+                <NavigationProperty Name="COREGADGET_REPORT" Type="pfs.REPORT"></NavigationProperty>
+                <NavigationProperty Name="DASHBOARD" Type="pfs.DASHBOARD"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CREATION_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="CYLINDER" BaseType="pfs.ENTITY">
+                <Property Name="CI_CYLINDER_VOLUME" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="ENGINE" Type="pfs.ENGINE"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="DASHBOARD" BaseType="pfs.ENTITY">
+                <Property Name="CI_ENTITY_NAME_DISPLAY" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTAINER_WIDTH" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTAINER_HEIGHT" Type="Edm.String"/>
+                <Property Name="CI_GDT_CONTAINER_DESCRIPTION" Type="Edm.String"/>
+                <NavigationProperty Name="COREDASHBOARD_COREGADGET" Type="Collection(pfs.CORE_GADGET)"></NavigationProperty>
+                <NavigationProperty Name="DASHBOARD_COREAPPLICATION" Type="Collection(pfs.CORE_APPLICATION)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="DATA_TYPE" BaseType="pfs.ENTITY">
+                <Property Name="ATTRIBUTE_NAME_TO_UPDATE" Type="Edm.String"/>
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="DATE" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultDateImpl"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String" DefaultValue="MM/dd/yyyy"/>
+                <Property Name="INPUT_FORMAT_STRING" Type="Edm.String" DefaultValue="MM/dd/yyyy"/>
+                <Property Name="READ_ONLY" Type="Edm.Boolean" DefaultValue="Yes"/>
+                <Property Name="ALLOW_WEEKENDS" Type="Edm.Boolean" DefaultValue="Yes"/>
+                <Property Name="DATEEQUATION" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="DEPARTMENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="EDIT_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="EMPLOYEE" BaseType="pfs.ENTITY">
+                <Property Name="CI_ELN_MS_SP_SAML_EMAIL_CLAIM" Type="Edm.String"/>
+                <Property Name="CI_FIRST_NAME" Type="Edm.String"/>
+                <Property Name="CI_LAST_NAME" Type="Edm.String"/>
+                <Property Name="CI_EMAIL_ADDRESS" Type="Edm.String"/>
+                <Property Name="CI_USERNAME" Type="Edm.String"/>
+                <Property Name="CI_PASSWORD" Type="Edm.String"/>
+                <Property Name="CI_EMPLOYEE_PROFILE_IMAGE" Type="Edm.String"/>
+                <Property Name="STATUS" Type="Edm.String"/>
+                <Property Name="ENFORCE_PROJECT_SECURITY" Type="Edm.String" DefaultValue="No"/>
+                <NavigationProperty Name="ACCESS_CONTROL" Type="Collection(pfs.ACCESS_LEVEL)"></NavigationProperty>
+                <NavigationProperty Name="EMPLOYEE_APPLICATIONS" Type="Collection(pfs.APPLICATION)"></NavigationProperty>
+                <NavigationProperty Name="EMPLOYEE_DEFAULT_APPLICATION" Type="pfs.APPLICATION"></NavigationProperty>
+                <NavigationProperty Name="EMPLOYEE_DASHBOARDCOREHOME" Type="pfs.CORE_DASHBOARD"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="ENGINE" BaseType="pfs.ENTITY">
+                <Property Name="CI_ENGINE_NUM_CYLINDERS" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="ENGINE_CYLINDER" Type="Collection(pfs.CYLINDER)"></NavigationProperty>
+                <NavigationProperty Name="CAR" Type="pfs.CAR"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="ENTITY_BATCH_LOAD" HasStream="true" BaseType="pfs.FILE"></EntityType>
+            <EntityType Name="EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="CELL_CONTENT">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CI_CONC" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CONC_UNIT" Type="Edm.String"/>
+                <NavigationProperty Name="IMPL_CELL" Type="pfs.CELL" Partner="CONTENT"></NavigationProperty>
+                <NavigationProperty Name="IMPL_SAMPLE_LOT" Type="pfs.SAMPLE_LOT" Partner="REV_IMPL_SAMPLE_LOT_CELL_CONTENT"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="EXPERIMENT" BaseType="pfs.ENTITY">
+                <NavigationProperty Name="EXPERIMENT_PROTOCOL" Type="pfs.PROTOCOL"></NavigationProperty>
+                <NavigationProperty Name="EXPERIMENT_ASSAY" Type="pfs.ASSAY"></NavigationProperty>
+                <NavigationProperty Name="REV_CONTAINER_EXPERIMENT_EXPERIMENT_CONTAINER" Type="Collection(pfs.EXPERIMENT_CONTAINER)"></NavigationProperty>
+                <NavigationProperty Name="REV_EXPERIMENT_EXPERIMENT_SAMPLE" Type="Collection(pfs.EXPERIMENT_SAMPLE)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="CONTAINER_TRANSFER">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ATT_TRANSFER_SRC_CELL_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ATT_TRANSFER_DEST_CELL_ID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ATT_TRANSFER_TRANSFER_TYPE" Type="Edm.String" Nullable="false"/>
+                <Property Name="ATT_TRANSFER_SRC_AMOUNT" Type="Edm.Int32"/>
+                <Property Name="ATT_TRANSFER_AMOUNT_UNIT" Type="Edm.String"/>
+                <Property Name="ATT_TRANSFER_DEST_AMOUNT" Type="Edm.Int32"/>
+                <Property Name="ATT_TRANSFER_DEST_CONC_UNIT" Type="Edm.String"/>
+                <Property Name="ATT_TRANSFER_DEST_CONC" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="EXPERIMENT_CONTAINER" BaseType="pfs.ENTITY">
+                <Property Name="CI_SEQUENCE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CI_ACCEPT" Type="Edm.Boolean" Nullable="false"/>
+                <NavigationProperty Name="CONTAINER_EXPERIMENT" Type="pfs.EXPERIMENT" Partner="REV_CONTAINER_EXPERIMENT_EXPERIMENT_CONTAINER"></NavigationProperty>
+                <NavigationProperty Name="CONTAINER" Type="pfs.CONTAINER"></NavigationProperty>
+                <NavigationProperty Name="REV_EXPERIMENT_CONTAINER_EXPERIMENT_SAMPLE" Type="Collection(pfs.EXPERIMENT_SAMPLE)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="EXPERIMENT_RESULT_FILE" HasStream="true" BaseType="pfs.FILE"></EntityType>
+            <EntityType Name="FILE_ATTRIBUTE" HasStream="true" BaseType="pfs.FILE"></EntityType>
+            <EntityType Name="FILE_DATATYPE" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultFileImpl"/>
+            </EntityType>
+            <EntityType Name="FININGS" BaseType="pfs.ENTITY">
+                <NavigationProperty Name="BEER_FININGS" Type="pfs.BEER"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="FLOATING_POINT" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultFloatImpl"/>
+                <Property Name="CI_READONLY" Type="Edm.Boolean" DefaultValue="no"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String" DefaultValue="###.####"/>
+                <Property Name="CI_USE_SIGFIGS" Type="Edm.Boolean" DefaultValue="No"/>
+                <Property Name="CI_NUMERICDATATYPE_ALLOW_SOFT_DATA" Type="Edm.Boolean" DefaultValue="No"/>
+            </EntityType>
+            <EntityType Name="FORMATTED_TEXT" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="TEXT_AREA_HEIGHT" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="TEXT_AREA_WIDTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="TOOLBAR_SET" Type="Edm.String" DefaultValue="Default"/>
+                <Property Name="ATTRIBUTE_NAME_TO_UPDATE" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="FULFILL_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="FUNCTION" BaseType="pfs.ENTITY">
+                <Property Name="CI_NAV_URL_LABEL" Type="Edm.String"/>
+                <Property Name="CI_NAV_URL_TEMPLATE" Type="Edm.String"/>
+                <Property Name="CI_NAV_CATEGORY" Type="Edm.String"/>
+                <Property Name="CI_NAV_ENTITYTYPEASSOC_JSON" Type="Edm.String"/>
+                <Property Name="CI_NAV_SHOW_CONFIRM_DIALOG" Type="Edm.Boolean"/>
+                <Property Name="CI_NAV_FORM_KEY" Type="Edm.String"/>
+                <Property Name="CI_NAV_DEST_CMD_KEY" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="GADGET" BaseType="pfs.ENTITY">
+                <Property Name="CI_GADGET_VERSION" Type="Edm.String"/>
+                <Property Name="CI_GADGET_WIDTH" Type="Edm.String"/>
+                <Property Name="CI_GADGET_HEIGHT" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTENTTYPE" Type="Edm.String"/>
+                <Property Name="CI_GADGET_CONTENT" Type="Edm.String"/>
+                <Property Name="CI_GDT_DESCRIPTION" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="HOPS" BaseType="pfs.ENTITY">
+                <Property Name="CI_ALPHA_ACID_PERCENTAGE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_BETA_ACID_PERCENTAGE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_UNIQUE_REMARK_MOD" Type="Edm.String" Scale="100"/>
+                <NavigationProperty Name="BEER_HOPS" Type="pfs.BEER"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="HTML_REPORT" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.ReportHTMLDataType"/>
+                <Property Name="CI_QUERY" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="IMAGE" HasStream="true" BaseType="pfs.FILE"></EntityType>
+            <EntityType Name="IMAGE_DATATYPE" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultImageImpl"/>
+                <Property Name="THUMBNAIL_HEIGHT" Type="Edm.Decimal" DefaultValue="50" Scale="100"/>
+                <Property Name="THUMBNAIL_WIDTH" Type="Edm.Decimal" DefaultValue="50" Scale="100"/>
+                <Property Name="FORMAT_STRING" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="INGREDIENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="INSTRUMENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="INTEGER" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="CELL">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CI_AMOUNT" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_AMOUNT_UNIT" Type="Edm.String"/>
+                <NavigationProperty Name="IMPL_CONTAINER" Type="pfs.CONTAINER" Partner="REV_IMPL_CONTAINER_CELL"></NavigationProperty>
+                <NavigationProperty Name="CONTENT" Type="Collection(pfs.CELL_CONTENT)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="INTERMEDIATE_ASSAY_DATA">
+                <Key>
+                    <PropertyRef Name="Barcode"/>
+                </Key>
+                <Property Name="Barcode" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="INTERMEDIATE_EXPERIMENT_SAMPLE" Type="pfs.INTERMEDIATE_EXPERIMENT_SAMPLE" Partner="INTERMEDIATE_ASSAY_DATA"></NavigationProperty>
+                <NavigationProperty Name="IMPL_CONTAINER" Type="pfs.CONTAINER"></NavigationProperty>
+                <NavigationProperty Name="ASSAY" Type="pfs.ASSAY"></NavigationProperty>
+                <NavigationProperty Name="PROTOCOL" Type="pfs.PROTOCOL"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="FILE" HasStream="true" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="INTERMEDIATE_EXPERIMENT_SAMPLE" BaseType="pfs.ENTITY">
+                <Property Name="CI_CELL" Type="Edm.Int32"/>
+                <Property Name="CI_SEQUENCE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CI_ACCEPT" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="CI_GROUPING" Type="Edm.String"/>
+                <Property Name="CI_CONC_NM" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CONC_UNIT" Type="Edm.String"/>
+                <Property Name="CI_TIME" Type="Edm.Decimal"/>
+                <NavigationProperty Name="ENTITY" Type="pfs.ENTITY"></NavigationProperty>
+                <NavigationProperty Name="EXPERIMENT_CONTAINER" Type="pfs.EXPERIMENT_CONTAINER" Partner="REV_EXPERIMENT_CONTAINER_EXPERIMENT_SAMPLE"></NavigationProperty>
+                <NavigationProperty Name="EXPERIMENT" Type="pfs.EXPERIMENT" Partner="REV_EXPERIMENT_EXPERIMENT_SAMPLE"></NavigationProperty>
+                <NavigationProperty Name="ASSAY_DATA" Type="pfs.ASSAY_DATA"></NavigationProperty>
+                <NavigationProperty Name="DERIVES" Type="pfs.EXPERIMENT_SAMPLE" Partner="DERIVED_FROM"></NavigationProperty>
+                <NavigationProperty Name="INTERMEDIATE_ASSAY_DATA" Type="pfs.INTERMEDIATE_ASSAY_DATA"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="JOB" BaseType="pfs.ENTITY">
+                <Property Name="CI_JOB_CRONSTRING" Type="Edm.String"/>
+                <Property Name="CI_JOB_IMPLEMENTATIONCLASS" Type="Edm.String"/>
+                <Property Name="CI_JOB_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_JOB_LASTRUNSUCCESSFUL" Type="Edm.Boolean" DefaultValue="1" Scale="100"/>
+                <Property Name="CI_JOB_LASTRUNTIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_JOB_PCT_COMPLETE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_JOB_STATUS_MESSAGE" Type="Edm.String"/>
+                <Property Name="CI_JOB_TASK_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_INSTANCE_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_LOG" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="LABEL" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="LICENSE_CHECK" BaseType="pfs.ENTITY">
+                <Property Name="MAXIMUM_SESSIONS" Type="Edm.Decimal" DefaultValue="5" Scale="100"/>
+            </EntityType>
+            <EntityType Name="LIMS" BaseType="pfs.ENTITY">
+                <Property Name="LICENSE_KEY" Type="Edm.String"/>
+                <Property Name="DROP_DIRECTORY_BASE" Type="Edm.String" DefaultValue="C:\\Tomcat\\Tomcat 5.5\\webapps\\core\\fileDrop"/>
+                <Property Name="AMOUNT_OPTIONS" Type="Edm.String"/>
+                <Property Name="WEBAPP_NAME" Type="Edm.String"/>
+                <Property Name="LOW_STOCK_EMAIL" Type="Edm.Boolean"/>
+                <Property Name="INSTRUMENT_DAILY_WORKFLOW_EVALUATION" Type="Edm.Boolean"/>
+                <Property Name="LOW_TOTAL_SAMPLE_ALERT" Type="Edm.Boolean"/>
+                <Property Name="COMPANY_NAME" Type="Edm.String" DefaultValue="Core Informatics"/>
+                <Property Name="GLOBAL_BARCODE_PREFIX" Type="Edm.String"/>
+                <Property Name="SIGNATURE_REASONS" Type="Edm.String" DefaultValue="Testing"/>
+                <Property Name="PUBLISH_REQUIRES_SIGNATURE" Type="Edm.String" DefaultValue="No"/>
+                <Property Name="PROJECTDAEMONLOGDIRECTORY" Type="Edm.String" DefaultValue="C:\\LIMS\\PMDAEMON\\"/>
+                <Property Name="FILEDAEMONPORT" Type="Edm.String" DefaultValue="5595" Scale="100"/>
+                <Property Name="PROJECTDAEMONPORT" Type="Edm.String" DefaultValue="6696" Scale="100"/>
+                <Property Name="TMP_FILE_UPLOAD_DIRECTORY" Type="Edm.String" DefaultValue="C:\\tmp\\upload"/>
+                <Property Name="ENFORCE_ACCESS_LEVEL_SECURITY" Type="Edm.String" DefaultValue="Yes"/>
+                <Property Name="ENFORCE_PROJECT_SECURITY" Type="Edm.String" DefaultValue="Yes"/>
+                <Property Name="ENFORCE_STRICT_TRANSFERS" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="ENFORCE_ATTRIBUTE_LEVEL_SECURITY" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="CI_QUICK_FIND_BARCODE_IGNORES_CASE" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="CI_CHEMAXON_LICENSE_PATH_INCLUDE_FILE_NAME" Type="Edm.String" DefaultValue="false"/>
+                <Property Name="MAIL_SERVER" Type="Edm.String" DefaultValue="mail.corelims.com"/>
+                <Property Name="DEFAULT_SAMPLE_TYPE" Type="Edm.String"/>
+                <Property Name="MAIL_SERVER_PORT" Type="Edm.String" DefaultValue="25"/>
+                <Property Name="MAIL_RETURN_ADDRESS" Type="Edm.String" DefaultValue="limsadmin@corelims.com"/>
+                <Property Name="EFAX_RETURN_ADDRESS" Type="Edm.String" DefaultValue="limsadmin@corelims.com"/>
+                <Property Name="CI_EMAIL_USERNAME" Type="Edm.String" DefaultValue="yourCompany@corelims.com"/>
+                <Property Name="CI_EMAIL_PASSWORD" Type="Edm.String" DefaultValue="password"/>
+                <Property Name="CI_HISTORY_TREE_ITEMS_DAYS_FROM_TODAY" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="TRACK_AMOUNTS" Type="Edm.Boolean" DefaultValue="true"/>
+                <Property Name="TRACK_CONCENTRATIONS" Type="Edm.Boolean" DefaultValue="true"/>
+                <Property Name="USE_SIG_FIG_CONTAINER_AMOUNT" Type="Edm.Boolean"/>
+                <Property Name="USE_SIG_FIG_CONTAINER_CONCENTRATION" Type="Edm.Boolean"/>
+                <Property Name="CI_CONTAINER_STATS_POST_COMMIT" Type="Edm.Boolean" DefaultValue="0"/>
+                <Property Name="CONCENTRATION_OPTIONS" Type="Edm.String" DefaultValue="0"/>
+                <Property Name="CI_TYPE_TO_DEFAULT_CONTAINER_TYPE" Type="Edm.String" DefaultValue="0"/>
+                <Property Name="CI_DEFAULT_CURRENT_EMPLOYEE" Type="Edm.Boolean" DefaultValue="0"/>
+                <Property Name="LIQUID_AMOUNT_OPTIONS" Type="Edm.String" DefaultValue="0"/>
+                <Property Name="SOLID_AMOUNT_OPTIONS" Type="Edm.String"/>
+                <Property Name="CI_IDLETIMOUT_SECONDS" Type="Edm.Decimal" DefaultValue="3600" Scale="100"/>
+                <Property Name="CI_STICKYGRIDSELECTION" Type="Edm.String" DefaultValue="SIMPLE"/>
+                <Property Name="CI_LIMSSEQ_BUFFER_SIZE" Type="Edm.Decimal" DefaultValue="100" Scale="100"/>
+                <Property Name="CI_USE_TYPE_CACHE" Type="Edm.Boolean" DefaultValue="0"/>
+                <Property Name="CI_TIMECOURSEEXPERIMENTTYPES" Type="Edm.String" DefaultValue="0"/>
+                <Property Name="CI_LIMS_LOGINMESSAGE" Type="Edm.String"/>
+                <Property Name="CI_CONCUNITGLOBAL" Type="Edm.String"/>
+                <Property Name="CI_LOT_DETAILS_SAMPLE_FIRST" Type="Edm.Boolean"/>
+                <Property Name="CI_ALLOW_EMPTY_STRUCTURES" Type="Edm.String" DefaultValue="No"/>
+                <Property Name="SALT_STRIPPING" Type="Edm.String" DefaultValue="On"/>
+                <Property Name="NAV_BAR_COLOR" Type="Edm.String" DefaultValue="#F58637"/>
+                <Property Name="NAV_BAR_TEXT_COLOR" Type="Edm.String" DefaultValue="#000000"/>
+                <Property Name="NAV_BAR_LOGO" Type="Edm.String"/>
+                <Property Name="SYSTEM_ICON_SET" Type="Edm.String"/>
+                <Property Name="LDAP_AUTHENTICATION" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="LDAP_AUTHORIZATION" Type="Edm.Boolean" DefaultValue="false"/>
+                <Property Name="LDAP_URL" Type="Edm.String"/>
+                <Property Name="LDAP_DOMAIN" Type="Edm.String"/>
+                <Property Name="LDAP_SEARCH_BASE" Type="Edm.String"/>
+                <Property Name="LDAP_USERID_KEY" Type="Edm.String"/>
+                <Property Name="LDAP_SECURITY_PRINCIPAL" Type="Edm.String"/>
+                <Property Name="LDAP_SECURITY_CREDENTIALS" Type="Edm.String"/>
+                <Property Name="EVENT_DISPLAY_DATE_FORMAT" Type="Edm.String"/>
+                <Property Name="GENERAL_DATE_FORMAT" Type="Edm.String"/>
+                <Property Name="CORE_VERSION_NUMBER" Type="Edm.String"/>
+                <Property Name="SVN_REVISION_NUMBER" Type="Edm.String"/>
+                <Property Name="CORE_LAST_UPGRADE_DATE" Type="Edm.DateTimeOffset"/>
+                <Property Name="CORE_LAST_RESTART_DATE" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <EntityType Name="LIST" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="LIST_FUNCTION" BaseType="pfs.ENTITY">
+                <Property Name="CI_NAV_URL_LABEL" Type="Edm.String"/>
+                <Property Name="CI_NAV_URL_TEMPLATE" Type="Edm.String"/>
+                <Property Name="CI_NAV_CATEGORY" Type="Edm.String"/>
+                <Property Name="CI_NAV_ENTITYTYPEASSOC_JSON" Type="Edm.String"/>
+                <Property Name="CI_NAV_SHOW_CONFIRM_DIALOG" Type="Edm.Boolean"/>
+                <Property Name="CI_NAV_FORM_KEY" Type="Edm.String"/>
+                <Property Name="CI_NAV_DEST_CMD_KEY" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="LIVE_REPORT" BaseType="pfs.ENTITY">
+                <Property Name="CI_REPORT_QUERY" Type="Edm.String"/>
+                <Property Name="CI_REPORT_DATASET" Type="Edm.String"/>
+                <Property Name="CI_REPORT_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_REPORT_LAST_RUN_SUCCESSFUL" Type="Edm.Boolean"/>
+                <Property Name="CI_REPORT_LAST_RUN_TIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_REPORT_TIME_TO_RUN_MIN" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_REPORT_IS_RUNNING" Type="Edm.Boolean"/>
+                <Property Name="CI_REPORT_EXPORT_FILE" Type="Edm.String"/>
+                <Property Name="CI_REPORT_NUM_COLUMNS" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_REPORT_NUM_ROWS" Type="Edm.Decimal" Scale="100"/>
+                <NavigationProperty Name="COREREPORT_COREAPPLICATION" Type="Collection(pfs.CORE_APPLICATION)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="EXPERIMENT_SAMPLE" BaseType="pfs.ENTITY">
+                <Property Name="CI_CELL" Type="Edm.Int32"/>
+                <Property Name="CI_SEQUENCE" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CI_ACCEPT" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="CI_GROUPING" Type="Edm.String"/>
+                <Property Name="CI_CONC_NM" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_CONC_UNIT" Type="Edm.String"/>
+                <Property Name="CI_TIME" Type="Edm.Decimal"/>
+                <NavigationProperty Name="ENTITY" Type="pfs.ENTITY"></NavigationProperty>
+                <NavigationProperty Name="EXPERIMENT_CONTAINER" Type="pfs.EXPERIMENT_CONTAINER" Partner="REV_EXPERIMENT_CONTAINER_EXPERIMENT_SAMPLE"></NavigationProperty>
+                <NavigationProperty Name="EXPERIMENT" Type="pfs.EXPERIMENT" Partner="REV_EXPERIMENT_EXPERIMENT_SAMPLE"></NavigationProperty>
+                <NavigationProperty Name="ASSAY_DATA" Type="pfs.ASSAY_DATA"></NavigationProperty>
+                <NavigationProperty Name="DERIVED_FROM" Type="Collection(pfs.INTERMEDIATE_EXPERIMENT_SAMPLE)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="LOCATION" BaseType="pfs.ENTITY">
+                <Property Name="CI_CAPACITY" Type="Edm.Int32"/>
+                <Property Name="CI_COUNT" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="MALT" BaseType="pfs.ENTITY">
+                <Property Name="CI_DIASTATIC_POWER_LINTNER" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_WORT_VISCOSITY_CENTIPOISE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_UNIQUE_REMARK" Type="Edm.String"/>
+                <NavigationProperty Name="BEER_MALT" Type="pfs.BEER"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="MENU_ITEM" BaseType="pfs.ENTITY">
+                <Property Name="CI_NAV_URL_LABEL" Type="Edm.String"/>
+                <Property Name="CI_NAV_URL_TEMPLATE" Type="Edm.String"/>
+                <Property Name="CI_NAV_CATEGORY" Type="Edm.String"/>
+                <Property Name="CI_NAV_ENTITYTYPEASSOC_JSON" Type="Edm.String"/>
+                <Property Name="CI_NAV_SHOW_CONFIRM_DIALOG" Type="Edm.Boolean"/>
+                <Property Name="CI_NAV_FORM_KEY" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="MOVE_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="ON_ASSOCIATED_ATTRIBUTES_RULE" BaseType="pfs.ENTITY">
+                <Property Name="CONDITION" Type="Edm.String"/>
+                <Property Name="VALUE" Type="Edm.String"/>
+                <Property Name="DESCRIPTION" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="ON_ATTRIBUTES_RULE" BaseType="pfs.ENTITY">
+                <Property Name="CONDITION" Type="Edm.String"/>
+                <Property Name="VALUE" Type="Edm.String"/>
+                <Property Name="DESCRIPTION" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="ON_REQUIRED_ASSOCIATION_RULE" BaseType="pfs.ENTITY">
+                <Property Name="CONDITION" Type="Edm.String" DefaultValue="="/>
+                <Property Name="VALUE" Type="Edm.String"/>
+                <Property Name="DESCRIPTION" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="OVERRIDE_EVENT" BaseType="pfs.ENTITY">
+                <Property Name="OVERRIDE_IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.rule.override.DefaultOverrideEventImpl"/>
+            </EntityType>
+            <EntityType Name="PASSWORD" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String" DefaultValue="com.coreinformatics.core.dataType.DefaultPasswordImpl"/>
+                <Property Name="CI_PWD_FORCESPECIALCHAR" Type="Edm.Boolean"/>
+                <Property Name="CI_PWD_FORCECAPITALLETTER" Type="Edm.Boolean"/>
+                <Property Name="CI_PWD_FORCELOWERCASELETTER" Type="Edm.Boolean"/>
+                <Property Name="CI_PWD_FORCENUMBER" Type="Edm.Boolean"/>
+                <Property Name="CI_PWD_MINLENGTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_PWD_MAXLENGTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_PWD_MAX_AGE_DAYS" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_PWD_PREVENT_LAST_X" Type="Edm.Decimal" Scale="100"/>
+            </EntityType>
+            <EntityType Name="PDF" BaseType="pfs.ENTITY">
+                <Property Name="IMPLEMENTATION_CLASS" Type="Edm.String"/>
+                <Property Name="LARGEHEIGHT" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="LARGEWIDTH" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="SMALLHEIGHT" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="SMALLWIDTH" Type="Edm.Decimal" Scale="100"/>
+            </EntityType>
+            <EntityType Name="PRINTER" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="PRIORITIZATION_QUEUE" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="PRIORITIZATION_QUEUE_MEMBER" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="PROJECT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="PROJECT_JOB" BaseType="pfs.ENTITY">
+                <Property Name="CI_JOB_CRONSTRING" Type="Edm.String" DefaultValue="* * * * *"/>
+                <Property Name="CI_JOB_IMPLEMENTATIONCLASS" Type="Edm.String"/>
+                <Property Name="CI_JOB_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_JOB_LASTRUNSUCCESSFUL" Type="Edm.Boolean" DefaultValue="1" Scale="100"/>
+                <Property Name="CI_JOB_LASTRUNTIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_JOB_PCT_COMPLETE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_JOB_STATUS_MESSAGE" Type="Edm.String"/>
+                <Property Name="CI_JOB_TASK_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_INSTANCE_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_LOG" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="PROTOCOL" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="PUBLISH_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="QUEUE" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="QUEUE_MEMBER" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="REMOTE_DATA_AS_LIST" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="REPORT" BaseType="pfs.ENTITY">
+                <Property Name="CI_VELOCITY_TEMPLATE" Type="Edm.String"/>
+                <NavigationProperty Name="GADGET" Type="pfs.CORE_GADGET"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="REPORT_JOB" BaseType="pfs.ENTITY">
+                <Property Name="CI_JOB_CRONSTRING" Type="Edm.String"/>
+                <Property Name="CI_JOB_IMPLEMENTATIONCLASS" Type="Edm.String"/>
+                <Property Name="CI_JOB_DESCRIPTION" Type="Edm.String"/>
+                <Property Name="CI_JOB_LASTRUNSUCCESSFUL" Type="Edm.Boolean" DefaultValue="1" Scale="100"/>
+                <Property Name="CI_JOB_LASTRUNTIME" Type="Edm.DateTimeOffset"/>
+                <Property Name="CI_JOB_PCT_COMPLETE" Type="Edm.Decimal" Scale="100"/>
+                <Property Name="CI_JOB_STATUS_MESSAGE" Type="Edm.String"/>
+                <Property Name="CI_JOB_TASK_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_INSTANCE_ID" Type="Edm.String"/>
+                <Property Name="CI_JOB_LOG" Type="Edm.String"/>
+                <NavigationProperty Name="REPORT" Type="pfs.SCHEDULED_REPORT"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="REVISION_CHANGE_EVENT" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="SAMPLE" BaseType="pfs.ENTITY"></EntityType>
+            <EntityType Name="CONTAINER" BaseType="pfs.ENTITY">
+                <NavigationProperty Name="REV_IMPL_CONTAINER_CELL" Type="Collection(pfs.CELL)"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="SAMPLE_LOT" BaseType="pfs.ENTITY">
+                <Property Name="CI_LOT_NUM" Type="Edm.Int32" Nullable="false"/>
+                <NavigationProperty Name="REV_IMPL_SAMPLE_LOT_CELL_CONTENT" Type="pfs.CELL_CONTENT"></NavigationProperty>
+            </EntityType>
+            <EntityType Name="ENTITY">
+                <Key>
+                    <PropertyRef Name="Barcode"/>
+                </Key>
+                <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="256"/>
+                <Property Name="Barcode" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="Sequence" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="Created" Type="Edm.DateTimeOffset" Precision="3"/>
+                <Property Name="Modified" Type="Edm.DateTimeOffset" Precision="3"/>
+                <Property Name="Active" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="LikedBy" Type="Edm.Int32"/>
+                <Property Name="FollowedBy" Type="Edm.Int32"/>
+                <NavigationProperty Name="PROJECT" Type="Collection(pfs.PROJECT)"></NavigationProperty>
+                <NavigationProperty Name="LOCATION" Type="pfs.LOCATION"></NavigationProperty>
+            </EntityType>
+            <ComplexType Name="CPX_CONTENT">
+                <Property Name="lotId" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="concentration" Type="Edm.Decimal" Nullable="false"/>
+                <Property Name="concentrationUnit" Type="Edm.String" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="CPX_CELL">
+                <Property Name="cellId" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="amount" Type="Edm.Decimal" Nullable="false"/>
+                <Property Name="amountUnit" Type="Edm.String" Nullable="false"/>
+                <Property Name="contents" Type="Collection(pfs.CPX_CONTENT)" Nullable="false"/>
+            </ComplexType>
+            <Action Name="InventoryMove" IsBound="true">
+                <Parameter Name="entity" Type="pfs.ENTITY" Nullable="false"/>
+                <Parameter Name="locationId" Type="Edm.Int32" Nullable="false"/>
+                <Parameter Name="eventId" Type="Edm.Int32"/>
+                <ReturnType Type="pfs.ENTITY"/>
+            </Action>
+            <Action Name="SetCellContents" IsBound="true">
+                <Parameter Name="container" Type="pfs.CONTAINER" Nullable="false"/>
+                <Parameter Name="cells" Type="Collection(pfs.CPX_CELL)" Nullable="false"/>
+                <ReturnType Type="pfs.CONTAINER"/>
+            </Action>
+            <Action Name="PrintBarcode" IsBound="false">
+                <Parameter Name="EntityId" Type="Edm.Int32"/>
+            </Action>
+            <Function Name="list-superTypes">
+                <ReturnType Type="Collection(pfs.SuperType)"/>
+            </Function>
+            <Function Name="list-entityTypes">
+                <Parameter Name="SuperTypeName" Type="Edm.String"/>
+                <ReturnType Type="Collection(pfs.EntityType)"/>
+            </Function>
+            <EntityContainer Name="AdminPanel">
+                <EntitySet Name="SuperTypes" EntityType="pfs.SuperType">
+                    <NavigationPropertyBinding Path="EntityTypes" Target="EntityTypes"/>
+                </EntitySet>
+                <EntitySet Name="EntityTypes" EntityType="pfs.EntityType">
+                    <NavigationPropertyBinding Path="SuperType" Target="SuperTypes"/>
+                </EntitySet>
+                <EntitySet Name="Entitys" EntityType="pfs.ENTITY"></EntitySet>
+                <EntitySet Name="YEAST" EntityType="pfs.YEAST">
+                    <NavigationPropertyBinding Path="BEER_YEAST" Target="BEER"/>
+                </EntitySet>
+                <EntitySet Name="USER_EQUATION" EntityType="pfs.USER_EQUATION"></EntitySet>
+                <EntitySet Name="URI" EntityType="pfs.URI"></EntitySet>
+                <EntitySet Name="UNPUBLISH_EVENT" EntityType="pfs.UNPUBLISH_EVENT"></EntitySet>
+                <EntitySet Name="TYPE_SELECTOR" EntityType="pfs.TYPE_SELECTOR"></EntitySet>
+                <EntitySet Name="TRIGGER_EXPERIMENT_CONTROL_ROLLUP" EntityType="pfs.TRIGGER_EXPERIMENT_CONTROL_ROLLUP"></EntitySet>
+                <EntitySet Name="TRIGGER_EXPT_CONT_UPDATE" EntityType="pfs.TRIGGER_EXPT_CONT_UPDATE"></EntitySet>
+                <EntitySet Name="TRIGGER_EXPT_CREATE_SAMPLE_LOT" EntityType="pfs.TRIGGER_EXPT_CREATE_SAMPLE_LOT"></EntitySet>
+                <EntitySet Name="TRIGGER_EXPT_DATA_UPDATE" EntityType="pfs.TRIGGER_EXPT_DATA_UPDATE"></EntitySet>
+                <EntitySet Name="TRIGGER_ASSAY_GROUPING_NUMERIC_ROLLUP" EntityType="pfs.TRIGGER_ASSAY_GROUPING_NUMERIC_ROLLUP"></EntitySet>
+                <EntitySet Name="TRIGGER_MESSAGE_IMPL" EntityType="pfs.TRIGGER_MESSAGE_IMPL">
+                    <NavigationPropertyBinding Path="TRIGGER_MESSAGE" Target="TRIGGER_MESSAGE"/>
+                </EntitySet>
+                <EntitySet Name="TRIGGER_MESSAGE" EntityType="pfs.TRIGGER_MESSAGE">
+                    <NavigationPropertyBinding Path="TRIGGER" Target="TRIGGER_MESSAGE_IMPL"/>
+                </EntitySet>
+                <EntitySet Name="TRIGGER_IMPL" EntityType="pfs.TRIGGER_IMPL"></EntitySet>
+                <EntitySet Name="TRIGGER" EntityType="pfs.TRIGGER"></EntitySet>
+                <EntitySet Name="TIRE" EntityType="pfs.TIRE">
+                    <NavigationPropertyBinding Path="CAR" Target="CAR"/>
+                    <NavigationPropertyBinding Path="CAR" Target="CAR"/>
+                </EntitySet>
+                <EntitySet Name="TIMESTAMP" EntityType="pfs.TIMESTAMP"></EntitySet>
+                <EntitySet Name="TEXT" EntityType="pfs.TEXT"></EntitySet>
+                <EntitySet Name="TEST" EntityType="pfs.TEST"></EntitySet>
+                <EntitySet Name="STRING" EntityType="pfs.STRING"></EntitySet>
+                <EntitySet Name="STATUS_UPDATE_EVENT" EntityType="pfs.STATUS_UPDATE_EVENT"></EntitySet>
+                <EntitySet Name="SITE" EntityType="pfs.SITE"></EntitySet>
+                <EntitySet Name="SDMS_AWS_S3_JOB" EntityType="pfs.SDMS_AWS_S3_JOB"></EntitySet>
+                <EntitySet Name="SDMS_FILE_SYSTEM_JOB" EntityType="pfs.SDMS_FILE_SYSTEM_JOB"></EntitySet>
+                <EntitySet Name="SDK_USER" EntityType="pfs.SDK_USER"></EntitySet>
+                <EntitySet Name="SD_FILE" EntityType="pfs.SD_FILE"></EntitySet>
+                <EntitySet Name="SCHEDULED_REPORT" EntityType="pfs.SCHEDULED_REPORT">
+                    <NavigationPropertyBinding Path="COREREPORT_REPORTJOB" Target="REPORT_JOB"/>
+                    <NavigationPropertyBinding Path="COREREPORT_COREAPPLICATION" Target="CORE_APPLICATION"/>
+                </EntitySet>
+                <EntitySet Name="SAMPLE_TRANSFER" EntityType="pfs.SAMPLE_TRANSFER"></EntitySet>
+                <EntitySet Name="AD_HOC_QUERY" EntityType="pfs.AD_HOC_QUERY"></EntitySet>
+                <EntitySet Name="APPLICATION" EntityType="pfs.APPLICATION">
+                    <NavigationPropertyBinding Path="EMPLOYEE" Target="EMPLOYEE"/>
+                    <NavigationPropertyBinding Path="EMPLOYEE" Target="EMPLOYEE"/>
+                </EntitySet>
+                <EntitySet Name="ACCESS_LEVEL" EntityType="pfs.ACCESS_LEVEL">
+                    <NavigationPropertyBinding Path="HAS_ACCESS" Target="EMPLOYEE"/>
+                </EntitySet>
+                <EntitySet Name="ASSAY_DATA" EntityType="pfs.ASSAY_DATA">
+                    <NavigationPropertyBinding Path="EXPERIMENT_SAMPLE" Target="EXPERIMENT_SAMPLE"/>
+                    <NavigationPropertyBinding Path="IMPL_CONTAINER" Target="CONTAINER"/>
+                    <NavigationPropertyBinding Path="ASSAY" Target="ASSAY"/>
+                    <NavigationPropertyBinding Path="PROTOCOL" Target="PROTOCOL"/>
+                </EntitySet>
+                <EntitySet Name="BANNER_MESSAGE" EntityType="pfs.BANNER_MESSAGE"></EntitySet>
+                <EntitySet Name="BEER" EntityType="pfs.BEER">
+                    <NavigationPropertyBinding Path="BEER_FININGS" Target="FININGS"/>
+                    <NavigationPropertyBinding Path="BEER_HOPS" Target="HOPS"/>
+                    <NavigationPropertyBinding Path="BEER_MALT" Target="MALT"/>
+                    <NavigationPropertyBinding Path="BEER_YEAST" Target="YEAST"/>
+                    <NavigationPropertyBinding Path="BATCH" Target="BEER_BATCH"/>
+                </EntitySet>
+                <EntitySet Name="BEER_BATCH" EntityType="pfs.BEER_BATCH">
+                    <NavigationPropertyBinding Path="BEER" Target="BEER"/>
+                </EntitySet>
+                <EntitySet Name="BOOLEAN" EntityType="pfs.BOOLEAN"></EntitySet>
+                <EntitySet Name="CALCULATOR" EntityType="pfs.CALCULATOR"></EntitySet>
+                <EntitySet Name="CAR" EntityType="pfs.CAR">
+                    <NavigationPropertyBinding Path="CAR_ENGINE" Target="ENGINE"/>
+                    <NavigationPropertyBinding Path="CAR_TIRE" Target="TIRE"/>
+                    <NavigationPropertyBinding Path="CAR_SPARE_TIRE" Target="TIRE"/>
+                </EntitySet>
+                <EntitySet Name="CELLENTITYTYPELINK" EntityType="pfs.CELLENTITYTYPELINK"></EntitySet>
+                <EntitySet Name="ASSAY" EntityType="pfs.ASSAY"></EntitySet>
+                <EntitySet Name="CONCENTRATION" EntityType="pfs.CONCENTRATION"></EntitySet>
+                <EntitySet Name="CONDITIONAL_FORMAT" EntityType="pfs.CONDITIONAL_FORMAT"></EntitySet>
+                <EntitySet Name="CONSUMABLE" EntityType="pfs.CONSUMABLE">
+                    <NavigationPropertyBinding Path="CHILD" Target="CONSUMABLE_LOT"/>
+                </EntitySet>
+                <EntitySet Name="CONSUMABLE_LOT" EntityType="pfs.CONSUMABLE_LOT">
+                    <NavigationPropertyBinding Path="PARENT" Target="CONSUMABLE"/>
+                </EntitySet>
+                <EntitySet Name="CONTAINER_FILL_EVENT" EntityType="pfs.CONTAINER_FILL_EVENT"></EntitySet>
+                <EntitySet Name="COPY_EVENT" EntityType="pfs.COPY_EVENT"></EntitySet>
+                <EntitySet Name="CORE_APPLICATION" EntityType="pfs.CORE_APPLICATION">
+                    <NavigationPropertyBinding Path="COREAPPLICATION_DASHBOARDAPPDETAIL" Target="CORE_DASHBOARD"/>
+                    <NavigationPropertyBinding Path="REPORT" Target="LIVE_REPORT"/>
+                    <NavigationPropertyBinding Path="DASHBOARD" Target="CORE_DASHBOARD"/>
+                    <NavigationPropertyBinding Path="REPORT" Target="SCHEDULED_REPORT"/>
+                    <NavigationPropertyBinding Path="DASHBOARD" Target="DASHBOARD"/>
+                </EntitySet>
+                <EntitySet Name="CORE_DASHBOARD" EntityType="pfs.CORE_DASHBOARD">
+                    <NavigationPropertyBinding Path="COREDASHBOARD_COREGADGET" Target="CORE_GADGET"/>
+                    <NavigationPropertyBinding Path="COREDASHBOARD_COREAPPLICATION" Target="CORE_APPLICATION"/>
+                    <NavigationPropertyBinding Path="APPLICATION" Target="CORE_APPLICATION"/>
+                    <NavigationPropertyBinding Path="EMPLOYEE" Target="EMPLOYEE"/>
+                </EntitySet>
+                <EntitySet Name="CORE_DATA_TYPE" EntityType="pfs.CORE_DATA_TYPE"></EntitySet>
+                <EntitySet Name="CORE_GADGET" EntityType="pfs.CORE_GADGET">
+                    <NavigationPropertyBinding Path="COREGADGET_REPORT" Target="REPORT"/>
+                    <NavigationPropertyBinding Path="DASHBOARD" Target="CORE_DASHBOARD"/>
+                    <NavigationPropertyBinding Path="DASHBOARD" Target="DASHBOARD"/>
+                </EntitySet>
+                <EntitySet Name="CREATION_EVENT" EntityType="pfs.CREATION_EVENT"></EntitySet>
+                <EntitySet Name="CYLINDER" EntityType="pfs.CYLINDER">
+                    <NavigationPropertyBinding Path="ENGINE" Target="ENGINE"/>
+                </EntitySet>
+                <EntitySet Name="DASHBOARD" EntityType="pfs.DASHBOARD">
+                    <NavigationPropertyBinding Path="COREDASHBOARD_COREGADGET" Target="CORE_GADGET"/>
+                    <NavigationPropertyBinding Path="DASHBOARD_COREAPPLICATION" Target="CORE_APPLICATION"/>
+                </EntitySet>
+                <EntitySet Name="DATA_TYPE" EntityType="pfs.DATA_TYPE"></EntitySet>
+                <EntitySet Name="DATE" EntityType="pfs.DATE"></EntitySet>
+                <EntitySet Name="DEPARTMENT" EntityType="pfs.DEPARTMENT"></EntitySet>
+                <EntitySet Name="EDIT_EVENT" EntityType="pfs.EDIT_EVENT"></EntitySet>
+                <EntitySet Name="EMPLOYEE" EntityType="pfs.EMPLOYEE">
+                    <NavigationPropertyBinding Path="ACCESS_CONTROL" Target="ACCESS_LEVEL"/>
+                    <NavigationPropertyBinding Path="EMPLOYEE_APPLICATIONS" Target="APPLICATION"/>
+                    <NavigationPropertyBinding Path="EMPLOYEE_DEFAULT_APPLICATION" Target="APPLICATION"/>
+                    <NavigationPropertyBinding Path="EMPLOYEE_DASHBOARDCOREHOME" Target="CORE_DASHBOARD"/>
+                </EntitySet>
+                <EntitySet Name="ENGINE" EntityType="pfs.ENGINE">
+                    <NavigationPropertyBinding Path="ENGINE_CYLINDER" Target="CYLINDER"/>
+                    <NavigationPropertyBinding Path="CAR" Target="CAR"/>
+                </EntitySet>
+                <EntitySet Name="ENTITY_BATCH_LOAD" EntityType="pfs.ENTITY_BATCH_LOAD"></EntitySet>
+                <EntitySet Name="EVENT" EntityType="pfs.EVENT"></EntitySet>
+                <EntitySet Name="CELL_CONTENT" EntityType="pfs.CELL_CONTENT">
+                    <NavigationPropertyBinding Path="IMPL_CELL" Target="CELL"/>
+                    <NavigationPropertyBinding Path="IMPL_SAMPLE_LOT" Target="SAMPLE_LOT"/>
+                </EntitySet>
+                <EntitySet Name="EXPERIMENT" EntityType="pfs.EXPERIMENT">
+                    <NavigationPropertyBinding Path="EXPERIMENT_PROTOCOL" Target="PROTOCOL"/>
+                    <NavigationPropertyBinding Path="EXPERIMENT_ASSAY" Target="ASSAY"/>
+                    <NavigationPropertyBinding Path="REV_CONTAINER_EXPERIMENT_EXPERIMENT_CONTAINER" Target="EXPERIMENT_CONTAINER"/>
+                    <NavigationPropertyBinding Path="REV_EXPERIMENT_EXPERIMENT_SAMPLE" Target="EXPERIMENT_SAMPLE"/>
+                </EntitySet>
+                <EntitySet Name="CONTAINER_TRANSFER" EntityType="pfs.CONTAINER_TRANSFER"></EntitySet>
+                <EntitySet Name="EXPERIMENT_CONTAINER" EntityType="pfs.EXPERIMENT_CONTAINER">
+                    <NavigationPropertyBinding Path="CONTAINER_EXPERIMENT" Target="EXPERIMENT"/>
+                    <NavigationPropertyBinding Path="CONTAINER" Target="CONTAINER"/>
+                    <NavigationPropertyBinding Path="REV_EXPERIMENT_CONTAINER_EXPERIMENT_SAMPLE" Target="EXPERIMENT_SAMPLE"/>
+                </EntitySet>
+                <EntitySet Name="EXPERIMENT_RESULT_FILE" EntityType="pfs.EXPERIMENT_RESULT_FILE"></EntitySet>
+                <EntitySet Name="FILE_ATTRIBUTE" EntityType="pfs.FILE_ATTRIBUTE"></EntitySet>
+                <EntitySet Name="FILE_DATATYPE" EntityType="pfs.FILE_DATATYPE"></EntitySet>
+                <EntitySet Name="FININGS" EntityType="pfs.FININGS">
+                    <NavigationPropertyBinding Path="BEER_FININGS" Target="BEER"/>
+                </EntitySet>
+                <EntitySet Name="FLOATING_POINT" EntityType="pfs.FLOATING_POINT"></EntitySet>
+                <EntitySet Name="FORMATTED_TEXT" EntityType="pfs.FORMATTED_TEXT"></EntitySet>
+                <EntitySet Name="FULFILL_EVENT" EntityType="pfs.FULFILL_EVENT"></EntitySet>
+                <EntitySet Name="FUNCTION" EntityType="pfs.FUNCTION"></EntitySet>
+                <EntitySet Name="GADGET" EntityType="pfs.GADGET"></EntitySet>
+                <EntitySet Name="HOPS" EntityType="pfs.HOPS">
+                    <NavigationPropertyBinding Path="BEER_HOPS" Target="BEER"/>
+                </EntitySet>
+                <EntitySet Name="HTML_REPORT" EntityType="pfs.HTML_REPORT"></EntitySet>
+                <EntitySet Name="IMAGE" EntityType="pfs.IMAGE"></EntitySet>
+                <EntitySet Name="IMAGE_DATATYPE" EntityType="pfs.IMAGE_DATATYPE"></EntitySet>
+                <EntitySet Name="INGREDIENT" EntityType="pfs.INGREDIENT"></EntitySet>
+                <EntitySet Name="INSTRUMENT" EntityType="pfs.INSTRUMENT"></EntitySet>
+                <EntitySet Name="INTEGER" EntityType="pfs.INTEGER"></EntitySet>
+                <EntitySet Name="CELL" EntityType="pfs.CELL">
+                    <NavigationPropertyBinding Path="IMPL_CONTAINER" Target="CONTAINER"/>
+                    <NavigationPropertyBinding Path="CONTENT" Target="CELL_CONTENT"/>
+                </EntitySet>
+                <EntitySet Name="INTERMEDIATE_ASSAY_DATA" EntityType="pfs.INTERMEDIATE_ASSAY_DATA">
+                    <NavigationPropertyBinding Path="INTERMEDIATE_EXPERIMENT_SAMPLE" Target="INTERMEDIATE_EXPERIMENT_SAMPLE"/>
+                    <NavigationPropertyBinding Path="IMPL_CONTAINER" Target="CONTAINER"/>
+                    <NavigationPropertyBinding Path="ASSAY" Target="ASSAY"/>
+                    <NavigationPropertyBinding Path="PROTOCOL" Target="PROTOCOL"/>
+                </EntitySet>
+                <EntitySet Name="FILE" EntityType="pfs.FILE"></EntitySet>
+                <EntitySet Name="INTERMEDIATE_EXPERIMENT_SAMPLE" EntityType="pfs.INTERMEDIATE_EXPERIMENT_SAMPLE">
+                    <NavigationPropertyBinding Path="ENTITY" Target="ENTITY"/>
+                    <NavigationPropertyBinding Path="EXPERIMENT_CONTAINER" Target="EXPERIMENT_CONTAINER"/>
+                    <NavigationPropertyBinding Path="EXPERIMENT" Target="EXPERIMENT"/>
+                    <NavigationPropertyBinding Path="ASSAY_DATA" Target="ASSAY_DATA"/>
+                    <NavigationPropertyBinding Path="DERIVES" Target="EXPERIMENT_SAMPLE"/>
+                    <NavigationPropertyBinding Path="INTERMEDIATE_ASSAY_DATA" Target="INTERMEDIATE_ASSAY_DATA"/>
+                </EntitySet>
+                <EntitySet Name="JOB" EntityType="pfs.JOB"></EntitySet>
+                <EntitySet Name="LABEL" EntityType="pfs.LABEL"></EntitySet>
+                <EntitySet Name="LICENSE_CHECK" EntityType="pfs.LICENSE_CHECK"></EntitySet>
+                <EntitySet Name="LIMS" EntityType="pfs.LIMS"></EntitySet>
+                <EntitySet Name="LIST" EntityType="pfs.LIST"></EntitySet>
+                <EntitySet Name="LIST_FUNCTION" EntityType="pfs.LIST_FUNCTION"></EntitySet>
+                <EntitySet Name="LIVE_REPORT" EntityType="pfs.LIVE_REPORT">
+                    <NavigationPropertyBinding Path="COREREPORT_COREAPPLICATION" Target="CORE_APPLICATION"/>
+                </EntitySet>
+                <EntitySet Name="EXPERIMENT_SAMPLE" EntityType="pfs.EXPERIMENT_SAMPLE">
+                    <NavigationPropertyBinding Path="ENTITY" Target="ENTITY"/>
+                    <NavigationPropertyBinding Path="EXPERIMENT_CONTAINER" Target="EXPERIMENT_CONTAINER"/>
+                    <NavigationPropertyBinding Path="EXPERIMENT" Target="EXPERIMENT"/>
+                    <NavigationPropertyBinding Path="ASSAY_DATA" Target="ASSAY_DATA"/>
+                    <NavigationPropertyBinding Path="DERIVED_FROM" Target="INTERMEDIATE_EXPERIMENT_SAMPLE"/>
+                </EntitySet>
+                <EntitySet Name="LOCATION" EntityType="pfs.LOCATION"></EntitySet>
+                <EntitySet Name="MALT" EntityType="pfs.MALT">
+                    <NavigationPropertyBinding Path="BEER_MALT" Target="BEER"/>
+                </EntitySet>
+                <EntitySet Name="MENU_ITEM" EntityType="pfs.MENU_ITEM"></EntitySet>
+                <EntitySet Name="MOVE_EVENT" EntityType="pfs.MOVE_EVENT"></EntitySet>
+                <EntitySet Name="ON_ASSOCIATED_ATTRIBUTES_RULE" EntityType="pfs.ON_ASSOCIATED_ATTRIBUTES_RULE"></EntitySet>
+                <EntitySet Name="ON_ATTRIBUTES_RULE" EntityType="pfs.ON_ATTRIBUTES_RULE"></EntitySet>
+                <EntitySet Name="ON_REQUIRED_ASSOCIATION_RULE" EntityType="pfs.ON_REQUIRED_ASSOCIATION_RULE"></EntitySet>
+                <EntitySet Name="OVERRIDE_EVENT" EntityType="pfs.OVERRIDE_EVENT"></EntitySet>
+                <EntitySet Name="PASSWORD" EntityType="pfs.PASSWORD"></EntitySet>
+                <EntitySet Name="PDF" EntityType="pfs.PDF"></EntitySet>
+                <EntitySet Name="PRINTER" EntityType="pfs.PRINTER"></EntitySet>
+                <EntitySet Name="PRIORITIZATION_QUEUE" EntityType="pfs.PRIORITIZATION_QUEUE"></EntitySet>
+                <EntitySet Name="PRIORITIZATION_QUEUE_MEMBER" EntityType="pfs.PRIORITIZATION_QUEUE_MEMBER"></EntitySet>
+                <EntitySet Name="PROJECT" EntityType="pfs.PROJECT"></EntitySet>
+                <EntitySet Name="PROJECT_JOB" EntityType="pfs.PROJECT_JOB"></EntitySet>
+                <EntitySet Name="PROTOCOL" EntityType="pfs.PROTOCOL"></EntitySet>
+                <EntitySet Name="PUBLISH_EVENT" EntityType="pfs.PUBLISH_EVENT"></EntitySet>
+                <EntitySet Name="QUEUE" EntityType="pfs.QUEUE"></EntitySet>
+                <EntitySet Name="QUEUE_MEMBER" EntityType="pfs.QUEUE_MEMBER"></EntitySet>
+                <EntitySet Name="REMOTE_DATA_AS_LIST" EntityType="pfs.REMOTE_DATA_AS_LIST"></EntitySet>
+                <EntitySet Name="REPORT" EntityType="pfs.REPORT">
+                    <NavigationPropertyBinding Path="GADGET" Target="CORE_GADGET"/>
+                </EntitySet>
+                <EntitySet Name="REPORT_JOB" EntityType="pfs.REPORT_JOB">
+                    <NavigationPropertyBinding Path="REPORT" Target="SCHEDULED_REPORT"/>
+                </EntitySet>
+                <EntitySet Name="REVISION_CHANGE_EVENT" EntityType="pfs.REVISION_CHANGE_EVENT"></EntitySet>
+                <EntitySet Name="SAMPLE" EntityType="pfs.SAMPLE"></EntitySet>
+                <EntitySet Name="CONTAINER" EntityType="pfs.CONTAINER">
+                    <NavigationPropertyBinding Path="REV_IMPL_CONTAINER_CELL" Target="CELL"/>
+                </EntitySet>
+                <EntitySet Name="SAMPLE_LOT" EntityType="pfs.SAMPLE_LOT">
+                    <NavigationPropertyBinding Path="REV_IMPL_SAMPLE_LOT_CELL_CONTENT" Target="CELL_CONTENT"/>
+                </EntitySet>
+                <EntitySet Name="ENTITY" EntityType="pfs.ENTITY">
+                    <NavigationPropertyBinding Path="PROJECT" Target="PROJECT"/>
+                    <NavigationPropertyBinding Path="LOCATION" Target="LOCATION"/>
+                </EntitySet>
+                <ActionImport Name="PrintBarcode" Action="pfs.PrintBarcode"></ActionImport>
+                <FunctionImport Name="list-superTypes" Function="pfs.list-superTypes" EntitySet="pfs.SuperTypes"></FunctionImport>
+                <FunctionImport Name="list-entityTypes" Function="pfs.list-entityTypes" EntitySet="pfs.EntityTypes"></FunctionImport>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
